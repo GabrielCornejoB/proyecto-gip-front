@@ -4,3 +4,20 @@
     <router-outlet></router-outlet>
   </main>
 </div>
+<div
+  (click)="closeAlertToast()"
+  [ngClass]="{
+    'opacity-0': !isAlertToastOpen(),
+    'opacity-100': isAlertToastOpen(),
+  }"
+  class="alert {{
+    alertToastVariant().class
+  }} fixed bottom-8 right-8 w-96 cursor-pointer transition-opacity duration-500"
+  role="alert"
+>
+  <span class="material-symbols-outlined">
+    {{ alertToastVariant().icon }}
+  </span>
+  <span>{{ alertToastText() }}</span>
+  <span class="material-symbols-outlined"> close </span>
+</div>
