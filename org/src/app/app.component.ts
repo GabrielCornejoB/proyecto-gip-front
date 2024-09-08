@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { SideBarComponent } from './core/components/side-bar/side-bar.component';
 
 @Component({
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, SideBarComponent],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
