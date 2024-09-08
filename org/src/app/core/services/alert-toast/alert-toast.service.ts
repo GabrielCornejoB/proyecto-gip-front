@@ -19,6 +19,8 @@ export class AlertToastService {
   readonly durationInMs = 5000;
 
   open(type: AlertToastType, text: string): void {
+    if (this.isOpen()) return;
+
     this.isOpen.set(true);
     this.variant.set({
       type,
