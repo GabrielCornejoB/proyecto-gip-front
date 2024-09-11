@@ -15,4 +15,12 @@ export class DataUploadService {
     formData.append('file', file, file.name);
     return this.http.post(this.API_URL, formData);
   }
+
+  isValidFileExtension(fileName: string): boolean {
+    return (
+      fileName.endsWith('.xlsx') ||
+      fileName.endsWith('.xls') ||
+      fileName.endsWith('.csv')
+    );
+  }
 }

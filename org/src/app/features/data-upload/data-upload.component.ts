@@ -27,11 +27,7 @@ export class DataUploadComponent {
         'No ha seleccionado ningún archivo',
       );
     }
-    if (
-      !file.name.endsWith('.xlsx') &&
-      !file.name.endsWith('.xls') &&
-      !file.name.endsWith('.csv')
-    )
+    if (!this.dataUploadService.isValidFileExtension(file.name))
       return this.alertToastService.open(
         'warning',
         'El archivo no es de un formato valido. Debe ser: .xlsx, .xls o .csv',
