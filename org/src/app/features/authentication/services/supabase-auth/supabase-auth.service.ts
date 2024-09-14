@@ -21,4 +21,12 @@ export class SupabaseAuthService {
       password,
     });
   }
+
+  async logout() {
+    return this.supabaseClient.auth.signOut();
+  }
+
+  async getUserSession() {
+    return await this.supabaseClient.auth.getSession();
+  }
 }

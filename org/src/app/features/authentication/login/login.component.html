@@ -10,7 +10,7 @@
   <label
     [ngClass]="{
       'input-error':
-        !!form.controls.email.errors && form.controls.email.untouched,
+        !!form.controls.email.errors && !form.controls.email.untouched,
     }"
     class="input input-bordered mx-6 flex items-center gap-2"
   >

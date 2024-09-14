@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MENU_ITEMS } from '../../constants/menu-items.constant';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { SupabaseAuthService } from '../../../features/authentication/services/supabase-auth/supabase-auth.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -11,4 +12,14 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class SideBarComponent {
   readonly menuItems = MENU_ITEMS;
+
+  constructor(
+    private readonly supabaseAuthService: SupabaseAuthService,
+    private readonly router: Router,
+  ) {}
+
+  async logout() {
+    await this.supabaseAuthService.logout();
+    await this.router.navigateByUrl('/auth/login');
+  }
 }

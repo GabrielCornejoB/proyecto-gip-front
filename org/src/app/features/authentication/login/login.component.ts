@@ -49,6 +49,7 @@ export class LoginComponent {
           : 'Ocurrió un error durante la autenticación.',
       );
     }
+    this.form.reset();
     await this.router.navigateByUrl('/dashboard/data-upload');
     return this.alertToastService.open('success', 'Inicio de sesión exitoso');
   }
