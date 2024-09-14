@@ -1,13 +1,20 @@
 import { Route } from '@angular/router';
 import { DashboardWrapperComponent } from './core/components/dashboard-wrapper/dashboard-wrapper.component';
+import { AuthWrapperComponent } from './core/components/auth-wrapper/auth-wrapper.component';
 
 export const appRoutes: Route[] = [
   {
-    path: 'login',
-    loadComponent: () =>
-      import('./features/authentication/login/login.component').then(
-        (c) => c.LoginComponent,
-      ),
+    path: 'auth',
+    component: AuthWrapperComponent,
+    loadChildren: () => [
+      {
+        path: 'login',
+        loadComponent: () =>
+          import('./features/authentication/login/login.component').then(
+            (c) => c.LoginComponent,
+          ),
+      },
+    ],
   },
   {
     path: 'dashboard',
