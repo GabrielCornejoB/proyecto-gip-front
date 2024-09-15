@@ -38,4 +38,8 @@ export const appRoutes: Route[] = [
       },
     ],
   },
+  {
+    path: '**',
+    redirectTo: '/auth/login',
+  },
 ];
