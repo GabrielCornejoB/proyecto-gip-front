@@ -22,7 +22,7 @@
   "nxCloudAccessToken": "OTU0MjhmNzAtMTA4OC00ZjRkLThlYjItOTBmZTY1ZmYyNGRkfHJlYWQtd3JpdGU=",
   "targetDefaults": {
     "@angular-devkit/build-angular:application": {
-      "cache": true,
+      "cache": false,
       "dependsOn": [
         "^build"
       ],
