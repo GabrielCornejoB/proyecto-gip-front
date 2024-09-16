@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nx serve --no-cloud",
-    "build": "nx build --no-cloud",
+    "build": "nx build --no-cloud --skip-nx-cache --prod",
     "test": "nx test"
   },
   "private": true,
