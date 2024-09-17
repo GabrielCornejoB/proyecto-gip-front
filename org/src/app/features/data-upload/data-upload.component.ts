@@ -5,6 +5,7 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
 import { AlertToastService } from '../../core/services/alert-toast/alert-toast.service';
 import { DataUploadService } from './services/data-upload/data-upload.service';
 import { finalize } from 'rxjs';
+import { UploadedFiles } from './models/uploaded-files.model';
 
 @Component({
   selector: 'app-data-upload',
@@ -20,24 +21,39 @@ export class DataUploadComponent {
     private readonly dataUploadService: DataUploadService,
   ) {}
 
-  handleSubmitButtonClicked(file: File | undefined): void {
-    if (!file) {
+  handleSubmitButtonClicked(files: FileList | null): void {
+    if (!files || files.length === 0) {
       return this.alertToastService.open(
         'warning',
         'No ha seleccionado ningún archivo',
       );
     }
-    if (!this.dataUploadService.isValidFileExtension(file.name))
+    if (files.length !== 2) {
       return this.alertToastService.open(
         'warning',
-        'El archivo no es de un formato valido. Debe ser: .xlsx, .xls o .csv',
+        'Debe seleccionar dos archivos',
       );
-    this.uploadFile(file);
+    }
+    if (
+      !this.dataUploadService.isValidFileExtension(files[0].name) ||
+      !this.dataUploadService.isValidFileExtension(files[1].name)
+    )
+      return this.alertToastService.open(
+        'warning',
+        'Los archivos no tienen un formato valido. Debe ser: .xlsx, .xls o .csv',
+      );
+    if (!this.dataUploadService.areValidFileNames([files[0], files[1]])) {
+      return this.alertToastService.open(
+        'warning',
+        "Se debe de subir un archivo que comience por 'Rips' y otro que comience por 'Informe'.",
+      );
+    }
+    this.uploadFile(this.dataUploadService.organizeFiles([files[0], files[1]]));
   }
 
-  uploadFile(file: File): void {
+  uploadFile(files: UploadedFiles): void {
     this.dataUploadService
-      .uploadFile(file)
+      .uploadFile(files)
       .pipe(finalize(() => this.fileUploadComponent.cleanSelection()))
       .subscribe({
         next: () =>
