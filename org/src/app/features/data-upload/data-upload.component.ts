@@ -31,7 +31,7 @@ export class DataUploadComponent {
     if (files.length !== 2) {
       return this.alertToastService.open(
         'warning',
-        'Debe seleccionar dos archivos',
+        'Solo se pueden cargar dos archivos',
       );
     }
     if (
@@ -45,7 +45,7 @@ export class DataUploadComponent {
     if (!this.dataUploadService.areValidFileNames([files[0], files[1]])) {
       return this.alertToastService.open(
         'warning',
-        "Se debe de subir un archivo que comience por 'Rips' y otro que comience por 'Informe'.",
+        "Los nombres de los archivos debe comenzar por 'Rips' e 'Informe'",
       );
     }
     this.uploadFile(this.dataUploadService.organizeFiles([files[0], files[1]]));
@@ -59,12 +59,12 @@ export class DataUploadComponent {
         next: () =>
           this.alertToastService.open(
             'success',
-            'Archivo enviado exitosamente',
+            'Archivos enviados exitosamente',
           ),
         error: () =>
           this.alertToastService.open(
             'error',
-            'Ocurrió un error cargando el archivo',
+            'Ocurrió un error cargando los archivos',
           ),
       });
   }
