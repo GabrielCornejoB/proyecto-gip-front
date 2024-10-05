@@ -6,6 +6,7 @@ import { AlertToastService } from '../../core/services/alert-toast/alert-toast.s
 import { DataUploadService } from './services/data-upload/data-upload.service';
 import { finalize } from 'rxjs';
 import { UploadedFiles } from './models/uploaded-files.model';
+import { filesInputHandler } from './utils/validations/concrete.handlers';
 
 @Component({
   selector: 'app-data-upload',
@@ -22,33 +23,17 @@ export class DataUploadComponent {
   ) {}
 
   handleSubmitButtonClicked(files: FileList | null): void {
-    if (!files || files.length === 0) {
-      return this.alertToastService.open(
-        'warning',
-        'No ha seleccionado ningún archivo',
+    try {
+      const validatedFiles = filesInputHandler.handle(files as FileList);
+      this.uploadFile(
+        this.dataUploadService.organizeFiles([
+          validatedFiles[0],
+          validatedFiles[1],
+        ]),
       );
+    } catch (error) {
+      this.alertToastService.open('warning', (error as Error).message);
     }
-    if (files.length !== 2) {
-      return this.alertToastService.open(
-        'warning',
-        'Solo se pueden cargar dos archivos',
-      );
-    }
-    if (
-      !this.dataUploadService.isValidFileExtension(files[0].name) ||
-      !this.dataUploadService.isValidFileExtension(files[1].name)
-    )
-      return this.alertToastService.open(
-        'warning',
-        'Los archivos no tienen un formato valido. Debe ser: .xlsx, .xls o .csv',
-      );
-    if (!this.dataUploadService.areValidFileNames([files[0], files[1]])) {
-      return this.alertToastService.open(
-        'warning',
-        "Los nombres de los archivos debe comenzar por 'Rips' e 'Informe'",
-      );
-    }
-    this.uploadFile(this.dataUploadService.organizeFiles([files[0], files[1]]));
   }
 
   uploadFile(files: UploadedFiles): void {

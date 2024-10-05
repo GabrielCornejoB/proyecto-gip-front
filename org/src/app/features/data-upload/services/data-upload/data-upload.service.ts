@@ -18,35 +18,6 @@ export class DataUploadService {
     return this.http.post(this.API_URL, formData);
   }
 
-  isValidFileExtension(fileName: string): boolean {
-    return (
-      fileName.endsWith('.xlsx') ||
-      fileName.endsWith('.xls') ||
-      fileName.endsWith('.csv')
-    );
-  }
-
-  areValidFileNames(files: File[]): boolean {
-    const firstFileName = files[0].name.toLowerCase();
-    const secondFileName = files[1].name.toLowerCase();
-
-    if (
-      !firstFileName.startsWith('rips') &&
-      !firstFileName.startsWith('informe')
-    )
-      return false;
-    if (
-      !secondFileName.startsWith('rips') &&
-      !secondFileName.startsWith('informe')
-    )
-      return false;
-
-    return !(
-      firstFileName.substring(0, 4) === secondFileName.substring(0, 4) ||
-      firstFileName.substring(0, 7) === secondFileName.substring(0, 7)
-    );
-  }
-
   organizeFiles(files: File[]): UploadedFiles {
     return {
       ripsFile: files[0].name.toLowerCase().startsWith('rips')
