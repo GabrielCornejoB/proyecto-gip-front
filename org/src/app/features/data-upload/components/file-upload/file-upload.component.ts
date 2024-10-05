@@ -26,5 +26,6 @@ export class FileUploadComponent {
 
   cleanSelection(): void {
     this.fileInput.nativeElement.value = '';
+    this.encryptionKeyInput.reset('');
   }
 }
