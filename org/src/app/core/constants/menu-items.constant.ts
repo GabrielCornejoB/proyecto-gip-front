@@ -1,5 +1,9 @@
 export const MENU_ITEMS = [
   {
+    displayName: 'Encriptar Cédulas',
+    path: '/dashboard/data-encryption',
+  },
+  {
     displayName: 'Carga de datos',
     path: '/dashboard/data-upload',
   },
