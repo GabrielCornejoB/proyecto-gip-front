@@ -7,6 +7,7 @@ import { DataUploadService } from './services/data-upload/data-upload.service';
 import { finalize } from 'rxjs';
 import { UploadedFiles } from './models/uploaded-files.model';
 import { filesInputHandler } from './utils/validations/concrete.handlers';
+import { FileUploadFormValues } from './models/file-upload-form-values.model';
 
 @Component({
   selector: 'app-data-upload',
@@ -22,14 +23,11 @@ export class DataUploadComponent {
     private readonly dataUploadService: DataUploadService,
   ) {}
 
-  handleSubmitButtonClicked(files: FileList | null): void {
+  handleSubmitButtonClicked(formValues: FileUploadFormValues): void {
     try {
-      const validatedFiles = filesInputHandler.handle(files as FileList);
+      const files = filesInputHandler.handle(formValues.files as FileList);
       this.uploadFile(
-        this.dataUploadService.organizeFiles([
-          validatedFiles[0],
-          validatedFiles[1],
-        ]),
+        this.dataUploadService.organizeFiles([files[0], files[1]]),
       );
     } catch (error) {
       this.alertToastService.open('warning', (error as Error).message);
