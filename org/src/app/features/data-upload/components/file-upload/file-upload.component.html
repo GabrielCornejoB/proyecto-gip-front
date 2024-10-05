@@ -7,16 +7,33 @@
     </span>
     <p class="pb-12 text-4xl opacity-80">Arrastra y suelta un archivo o...</p>
 
+    <div
+      [attr.data-tip]="inputTooltipText"
+      class="tooltip tooltip-top w-3/4 before:rounded-2xl before:!bg-[#333c4deb] before:p-2"
+    >
+      <input
+        [formControl]="encryptionKeyInput"
+        [ngClass]="{
+          'input-error': encryptionKeyInput.errors && encryptionKeyInput.dirty,
+          'input-secondary':
+            !encryptionKeyInput.errors || !encryptionKeyInput.dirty,
+        }"
+        class="input input-bordered w-full"
+        placeholder="Ingrese aquí la clave de encriptación"
+        type="text"
+      />
+    </div>
+
     <input
       #inputFile
       [multiple]="true"
       accept=".xls, .xlsx, .csv"
-      class="file-input file-input-bordered file-input-secondary w-3/4"
+      class="file-input file-input-bordered file-input-secondary my-5 w-3/4"
       data-testid="file-upload-input"
       type="file"
     />
 
-    <div class="flex w-3/4 flex-row justify-between pt-5">
+    <div class="flex w-3/4 flex-row justify-between">
       <button
         (click)="cleanSelection()"
         class="btn btn-ghost underline"
@@ -25,7 +42,7 @@
         Limpiar Selección
       </button>
       <button (click)="submit()" class="btn" data-testid="submit-file-button">
-        Enviar archivo
+        Enviar archivos
       </button>
     </div>
   </div>
