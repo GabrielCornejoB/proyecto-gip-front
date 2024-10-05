@@ -36,13 +36,6 @@ export const appRoutes: Route[] = [
             (c) => c.DataUploadComponent,
           ),
       },
-      {
-        path: 'data-encryption',
-        loadComponent: () =>
-          import('./features/data-encryption/data-encryption.component').then(
-            (c) => c.DataEncryptionComponent,
-          ),
-      },
     ],
   },
   {
