@@ -1,32 +1,78 @@
-<div class="flex h-full items-center justify-center">
+<div class="flex h-full w-full items-center justify-center">
   <div
-    class="mb-16 flex flex-col items-center justify-center rounded-xl bg-base-100 p-16 pt-12 shadow-lg"
+    class="mb-16 flex w-3/4 flex-col items-center justify-center gap-6 rounded-xl border-[1px] border-gray-300 bg-base-100 p-6"
   >
-    <span class="material-symbols-outlined text-[12rem] text-secondary">
-      upload
-    </span>
-    <p class="pb-12 text-4xl opacity-80">Arrastra y suelta un archivo o...</p>
+    <div class="w-full flex-col items-start">
+      <h2 class="text-3xl font-bold">Cargar datos</h2>
+      <p class="pt-2 text-gray-500">
+        Acá puedes cargar los archivos de <strong>RIPS</strong> y los de los
+        <strong>informes mensuales</strong>. Estos archivos serán procesados
+        desde el navegador para encriptar las cédulas de los pacientes. Y
+        posteriormente serán cargados a la base de datos. Recuerda que los
+        documentos originales con las cédulas sin códificar no serán enviados a
+        ningún lado.
+      </p>
+    </div>
 
-    <input
-      #inputFile
-      [multiple]="true"
-      accept=".xls, .xlsx, .csv"
-      class="file-input file-input-bordered file-input-secondary w-3/4"
-      data-testid="file-upload-input"
-      type="file"
-    />
-
-    <div class="flex w-3/4 flex-row justify-between pt-5">
-      <button
-        (click)="cleanSelection()"
-        class="btn btn-ghost underline"
-        data-testid="submit-file-button"
+    <div class="flex w-full items-center justify-center">
+      <label
+        class="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
+        for="dropzone-file"
       >
-        Limpiar Selección
-      </button>
-      <button (click)="submit()" class="btn" data-testid="submit-file-button">
-        Enviar archivo
-      </button>
+        <div class="flex flex-col items-center justify-center pb-6 pt-5">
+          <span class="material-symbols-outlined mb-4 text-4xl text-gray-500">
+            upload_file
+          </span>
+          <p class="mb-2 text-sm text-gray-500">
+            <span class="font-semibold">
+              Presiona para seleccionar archivos
+            </span>
+            o arrastralos a esta zona
+          </p>
+          <p class="text-xs text-gray-500">
+            Solo se permiten archivos .xlsx y que inicien por "Rips" o "Informe"
+          </p>
+        </div>
+        <input
+          #inputFile
+          (input)="filesLoaded($event)"
+          [multiple]="true"
+          accept=".xlsx"
+          class="hidden"
+          id="dropzone-file"
+          type="file"
+        />
+      </label>
+    </div>
+
+    <div class="flex w-full flex-row justify-between">
+      <div class="flex w-1/2 flex-row flex-wrap items-center gap-2">
+        @if (fileInput !== null) {
+          @if (fileList().length > 0) {
+            @for (file of fileList(); track file.name) {
+              <kbd class="kbd text-xs">
+                {{ file.name }}
+              </kbd>
+            }
+          }
+        }
+      </div>
+      <div class="flex flex-row items-end gap-6">
+        <button
+          (click)="cleanSelection()"
+          class="btn btn-ghost underline"
+          data-testid="submit-file-button"
+        >
+          Limpiar selección
+        </button>
+        <button
+          (click)="submit()"
+          class="btn btn-secondary"
+          data-testid="submit-file-button"
+        >
+          Enviar archivos
+        </button>
+      </div>
     </div>
   </div>
 </div>
