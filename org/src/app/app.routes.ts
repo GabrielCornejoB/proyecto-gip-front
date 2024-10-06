@@ -36,6 +36,13 @@ export const appRoutes: Route[] = [
             (c) => c.DataUploadComponent,
           ),
       },
+      {
+        path: 'diagnostic-ai',
+        loadComponent: () =>
+          import('./features/diagnostic-ai/diagnostic-ai.component').then(
+            (c) => c.DiagnosticAiComponent,
+          ),
+      },
     ],
   },
   {

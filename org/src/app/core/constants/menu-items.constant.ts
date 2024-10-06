@@ -4,7 +4,7 @@ export const MENU_ITEMS = [
     path: '/dashboard/data-upload',
   },
   {
-    displayName: 'IA Diagnostica',
-    path: '/dashboard/predict-diagnostic',
+    displayName: 'Modelo Predictivo Diagnostico',
+    path: '/dashboard/diagnostic-ai',
   },
 ];
