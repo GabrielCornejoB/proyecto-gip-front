@@ -9,7 +9,7 @@ export abstract class FileInputHandler implements Handler {
     return handler;
   }
 
-  handle(request: FileList | null): FileList {
+  handle(request: FileList): FileList {
     if (this.next) {
       return this.next.handle(request);
     }

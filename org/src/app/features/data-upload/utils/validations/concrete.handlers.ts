@@ -1,7 +1,7 @@
 import { FileInputHandler } from './file-input.handler';
 
 export class MinFilesLengthHandler extends FileInputHandler {
-  public override handle(request: FileList | null): FileList {
+  public override handle(request: FileList): FileList {
     if (request === null || request.length === 0) {
       throw new Error('No ha seleccionado ningún archivo');
     }
@@ -10,8 +10,8 @@ export class MinFilesLengthHandler extends FileInputHandler {
 }
 
 export class RequiredFilesLengthHandler extends FileInputHandler {
-  public override handle(request: FileList | null): FileList {
-    if (request?.length !== 2) {
+  public override handle(request: FileList): FileList {
+    if (request.length !== 2) {
       throw new Error('Solo se pueden cargar dos archivos');
     }
     return super.handle(request);
@@ -19,8 +19,7 @@ export class RequiredFilesLengthHandler extends FileInputHandler {
 }
 
 export class ValidFilesExtensionsHandler extends FileInputHandler {
-  override handle(request: FileList | null): FileList {
-    request = request as FileList;
+  override handle(request: FileList): FileList {
     if (
       !request[0].name.endsWith('.xlsx') ||
       !request[1].name.endsWith('.xlsx')
@@ -35,8 +34,7 @@ export class ValidFilesExtensionsHandler extends FileInputHandler {
 }
 
 export class ValidFilesNamesHandler extends FileInputHandler {
-  override handle(request: FileList | null): FileList {
-    request = request as FileList;
+  override handle(request: FileList): FileList {
     if (!this.areValidFileNames(request[0], request[1])) {
       throw new Error(
         "Los nombres de los archivos deben iniciar por 'Rips' e 'Informe'",
