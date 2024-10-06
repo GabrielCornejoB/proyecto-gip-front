@@ -4,11 +4,11 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class EncryptionService {
-  getHashedDocuments(documents: string[]): string[] {
+  async getHashedDocuments(documents: string[]): Promise<string[]> {
     const hashedDocuments: string[] = [];
-    documents.forEach(async (doc) => {
+    for (const doc of documents) {
       hashedDocuments.push(await this.hashText(doc));
-    });
+    }
     return hashedDocuments;
   }
 

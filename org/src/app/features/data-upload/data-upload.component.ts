@@ -9,6 +9,7 @@ import { UploadedFiles } from './models/uploaded-files.model';
 import { FileUploadFormValues } from './models/file-upload-form-values.model';
 import { ExcelService } from './services/excel/excel.service';
 import { EncryptionService } from './services/encryption/encryption.service';
+import { filesInputHandler } from './utils/validations/concrete.handlers';
 
 @Component({
   selector: 'app-data-upload',
@@ -28,31 +29,45 @@ export class DataUploadComponent {
 
   async handleSubmitButtonClicked(formValues: FileUploadFormValues) {
     try {
-      // const files = filesInputHandler.handle(formValues.files as FileList);
-      // const organizedFiles = this.dataUploadService.organizeFiles([
-      //   files[0],
-      //   files[1],
-      // ]);
+      const files = filesInputHandler.handle(formValues.files as FileList);
+      const organizedFiles = this.dataUploadService.organizeFiles([
+        files[0],
+        files[1],
+      ]);
 
-      await this.encryptDocumentColumns(formValues.files![0]);
+      this.uploadFile({
+        ripsFile: await this.encryptDocumentColumns(organizedFiles.ripsFile),
+        monthlyFile: await this.encryptDocumentColumns(
+          organizedFiles.monthlyFile,
+        ),
+      });
     } catch (error) {
       this.alertToastService.open('warning', (error as Error).message);
     }
   }
 
-  async encryptDocumentColumns(file: File) {
-    const { worksheet } = await this.excelService.arrayBufferToExcel(
-      await file.arrayBuffer(),
-    );
+  async encryptDocumentColumns(file: File): Promise<File> {
+    try {
+      const { workbook, worksheet } =
+        await this.excelService.arrayBufferToExcel(await file.arrayBuffer());
+      const { index, values } = this.excelService.getColumn(
+        worksheet,
+        'Cedula',
+      );
+      worksheet.getColumn(index).values = [
+        'Cedula encriptada',
+        ...(await this.encryptionService.getHashedDocuments(values)),
+      ];
 
-    const documents = this.excelService.getColumnValues(worksheet, 'Cedula');
-
-    const encryptedColumn = [
-      'Cedula encriptada',
-      ...this.encryptionService.getHashedDocuments(documents),
-    ];
-
-    // TODO: 1. Eliminar columna de cedula, 2. Agregar nueva columna encriptada, 3. Retornar nuevo archivo y usar ese para enviar al back
+      return new File(
+        [(await workbook.xlsx.writeBuffer()).slice(0)],
+        `${file.name}Encrypted`,
+      );
+    } catch (error) {
+      throw new Error(
+        'Ocurrió un error al encriptar los datos, revise nuevamente los archivos ingresados.',
+      );
+    }
   }
 
   uploadFile(files: UploadedFiles): void {

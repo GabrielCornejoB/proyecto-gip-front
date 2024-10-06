@@ -13,12 +13,28 @@ export class ExcelService {
     return { workbook, worksheet };
   }
 
-  getColumnValues(worksheet: Excel.Worksheet, columnName: string): string[] {
+  getColumn(worksheet: Excel.Worksheet, columnName: string) {
     const columnIndex = (worksheet.getRow(1).values as string[]).indexOf(
       columnName,
     );
     const column = worksheet.getColumn(columnIndex).values.slice(2) as number[];
 
-    return column.map((cell) => cell.toString());
+    return {
+      values: column.map((cell) => cell.toString()),
+      index: columnIndex,
+    };
+  }
+
+  downloadTestFile(file: File) {
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(file);
+
+    link.href = url;
+    link.download = file.name;
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
   }
 }
