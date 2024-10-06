@@ -1,0 +1,163 @@
+<div class="flex h-full w-full flex-col gap-4">
+  <app-header
+    text="Modelo Predictivo de Machine Learning Diagnostico"
+  ></app-header>
+
+  <div
+    class="flex flex-col gap-4 rounded-xl border-[1px] border-gray-300 bg-base-100 p-4"
+  >
+    <h2 class="text-xl font-bold">Ingresar datos del paciente a predecir</h2>
+    <div class="flex flex-row items-center justify-between gap-6">
+      <label class="form-control w-full">
+        <div class="label">
+          <span class="label-text">Edad</span>
+        </div>
+        <input
+          class="input input-bordered"
+          placeholder="ej: 22"
+          type="number"
+        />
+      </label>
+
+      <label class="form-control w-full">
+        <div class="label">
+          <span class="label-text">Genero</span>
+        </div>
+        <select class="select select-bordered w-full">
+          <option disabled selected>Selecciona el genero</option>
+          <option>Masculino</option>
+          <option>Femenino</option>
+          <option>Otro</option>
+        </select>
+      </label>
+
+      <label class="form-control w-full">
+        <div class="label">
+          <span class="label-text">Barrio</span>
+        </div>
+        <select class="select select-bordered w-full">
+          <option disabled selected>Selecciona el barrio</option>
+          <option>Laureles</option>
+          <option>Bello</option>
+          <option>Envigado</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="flex flex-row items-center justify-between gap-6">
+      <label class="form-control w-full">
+        <div class="label">
+          <span class="label-text">Tipo de usuario</span>
+        </div>
+        <select class="select select-bordered w-full">
+          <option disabled selected>Selecciona el tipo de usuario</option>
+          <option>Particular</option>
+          <option>Estudiante</option>
+          <option>Empleado</option>
+        </select>
+      </label>
+
+      <label class="form-control w-full">
+        <div class="label">
+          <span class="label-text">Asunto</span>
+        </div>
+        <select class="select select-bordered w-full">
+          <option disabled selected>Selecciona el asunto</option>
+          <option>Egresado</option>
+          <option>Comfenalco</option>
+          <option>Convenio</option>
+        </select>
+      </label>
+
+      <label class="form-control w-full">
+        <div class="label">
+          <span class="label-text">Tipo de compromiso</span>
+        </div>
+        <div class="form-control w-full">
+          <label class="label cursor-pointer">
+            <span class="label-text">¿Es su primera consulta?</span>
+            <input
+              checked="checked"
+              class="checkbox-secondary checkbox"
+              type="checkbox"
+            />
+          </label>
+        </div>
+      </label>
+    </div>
+
+    <label class="form-control">
+      <div class="label">
+        <span class="label-text">
+          Información adicional de la consulta o del paciente
+        </span>
+      </div>
+      <textarea
+        class="textarea textarea-bordered h-24 resize-none"
+        placeholder="Bio"
+      ></textarea>
+    </label>
+
+    <div class="divider m-0"></div>
+
+    <div class="flex flex-row items-center justify-end gap-6">
+      <button class="btn btn-ghost underline">Limpiar formulario</button>
+      <button class="btn btn-secondary">Iniciar Predicción</button>
+    </div>
+  </div>
+
+  <div
+    class="flex flex-col gap-4 rounded-xl border-[1px] border-gray-300 bg-base-100 p-4"
+  >
+    <h2 class="text-xl font-bold">Predicciones realizadas previamente</h2>
+
+    <div class="overflow-x-auto">
+      <table class="table">
+        <!-- head -->
+        <thead>
+          <tr>
+            <th>Edad</th>
+            <th>Genero</th>
+            <th>Barrio</th>
+            <th>Tipo de usuario</th>
+            <th>Asunto</th>
+            <th>Primera consulta?</th>
+            <th>Diagnostico predecido</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- row 1 -->
+          <tr>
+            <td>37</td>
+            <td>Masculino</td>
+            <td>Poblado</td>
+            <td>Empleado</td>
+            <td>Particular</td>
+            <td>No</td>
+            <td>Un Diagnostico</td>
+          </tr>
+          <!-- row 2 -->
+          <tr>
+            <td>19</td>
+            <td>Femenino</td>
+            <td>Laureles</td>
+            <td>Estudiante</td>
+            <td>Convenio</td>
+            <td>Si</td>
+            <td>Ansiedad</td>
+          </tr>
+          <!-- row 3 -->
+          <tr>
+            <td>26</td>
+            <td>Otro</td>
+            <td>Belén</td>
+            <td>Egresado</td>
+            <td>Egresado</td>
+            <td>Si</td>
+            <td>Otro Diagnostico</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
