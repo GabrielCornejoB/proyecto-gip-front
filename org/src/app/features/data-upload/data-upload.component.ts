@@ -6,7 +6,6 @@ import { AlertToastService } from '../../core/services/alert-toast/alert-toast.s
 import { DataUploadService } from './services/data-upload/data-upload.service';
 import { finalize } from 'rxjs';
 import { UploadedFiles } from './models/uploaded-files.model';
-import { FileUploadFormValues } from './models/file-upload-form-values.model';
 import { ExcelService } from './services/excel/excel.service';
 import { EncryptionService } from './services/encryption/encryption.service';
 import { filesInputHandler } from './utils/validations/concrete.handlers';
@@ -27,9 +26,9 @@ export class DataUploadComponent {
     private readonly encryptionService: EncryptionService,
   ) {}
 
-  async handleSubmitButtonClicked(formValues: FileUploadFormValues) {
+  async handleSubmitButtonClicked(formValues: FileList | null) {
     try {
-      const files = filesInputHandler.handle(formValues.files as FileList);
+      const files = filesInputHandler.handle(formValues as FileList);
       const organizedFiles = this.dataUploadService.organizeFiles([
         files[0],
         files[1],
