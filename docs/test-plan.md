@@ -29,3 +29,11 @@ Para las pruebas se evaluarán los siguientes escenarios de los flujos mencionad
   - Carga de archivos fallida cuando no tienen campo de Cédula para encriptar
   - Carga de archivos fallida cuando no se envían los campos requeridos en los archivos
 - IA Diagnostica
+
+## Estrategia
+
+Para validar los escenarios planteados previamente se usarán las siguientes herramientas para las pruebas:
+
+- Pruebas exploratorias manuales.
+- Pruebas unitarias o de unidad con **Jest**.
+- Pruebas de UI (E2E y aceptación) con **Playwright**
