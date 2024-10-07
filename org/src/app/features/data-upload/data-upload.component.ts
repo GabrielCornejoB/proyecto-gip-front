@@ -54,13 +54,13 @@ export class DataUploadComponent {
         'Cedula',
       );
       worksheet.getColumn(index).values = [
-        'Cedula encriptada',
+        'identificacion encriptada',
         ...(await this.encryptionService.getHashedDocuments(values)),
       ];
 
       return new File(
         [(await workbook.xlsx.writeBuffer()).slice(0)],
-        `${file.name}Encrypted`,
+        `${file.name.slice(0, -5)}Encrypted.xlsx`,
       );
     } catch (error) {
       throw new Error(
