@@ -1,5 +1,6 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
-import { AlertToastVariant } from '../../models/alert-toast-variant.model';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { AlertToastState } from '../../models/alert-toast-state.model';
 import { ALERT_TOAST_ICONS } from '../../constants/alert-toast-icons.constant';
 import { ALERT_TOAST_CLASSES } from '../../constants/alert-toast-classes.constant';
 
@@ -9,32 +10,34 @@ export type AlertToastType = 'success' | 'info' | 'warning' | 'error';
   providedIn: 'root',
 })
 export class AlertToastService {
-  isOpen: WritableSignal<boolean> = signal(false);
-  variant: WritableSignal<AlertToastVariant> = signal({
-    type: 'success',
-    icon: 'check_',
-    class: 'alert-success',
-  });
-  text: WritableSignal<string> = signal('');
   readonly durationInMs = 5000;
 
-  open(type: AlertToastType, text: string): void {
-    if (this.isOpen()) return;
+  private state = new BehaviorSubject<AlertToastState>({
+    isOpen: false,
+    text: '',
+    icon: 'check-circle',
+    class: 'alert-success',
+    type: 'success',
+  });
+  state$ = this.state.asObservable();
 
-    this.isOpen.set(true);
-    this.variant.set({
+  open(type: AlertToastType, text: string): void {
+    if (this.state.value.isOpen) return;
+
+    this.state.next({
+      isOpen: true,
       type,
+      text,
       icon: ALERT_TOAST_ICONS[type],
       class: ALERT_TOAST_CLASSES[type],
     });
-    this.text.set(text);
 
     setTimeout(() => {
-      this.isOpen.set(false);
+      this.state.next({ ...this.state.value, isOpen: false });
     }, this.durationInMs);
   }
 
   close(): void {
-    this.isOpen.set(false);
+    this.state.next({ ...this.state.value, isOpen: false });
   }
 }
