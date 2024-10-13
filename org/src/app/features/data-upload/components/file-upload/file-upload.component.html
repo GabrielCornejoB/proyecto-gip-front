@@ -48,8 +48,8 @@
     <div class="flex w-full flex-row justify-between">
       <div class="flex w-1/2 flex-row flex-wrap items-center gap-2">
         @if (fileInput !== null) {
-          @if (fileList().length > 0) {
-            @for (file of fileList(); track file.name) {
+          @if ((fileList$ | async)!.length > 0) {
+            @for (file of fileList$ | async; track file.name) {
               <kbd class="kbd text-xs">
                 {{ file.name }}
               </kbd>
