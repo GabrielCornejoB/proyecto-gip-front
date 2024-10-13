@@ -1,5 +1,6 @@
 import { DataUploadService } from './data-upload.service';
 import { HttpClient } from '@angular/common/http';
+import { UploadedFiles } from '../../models/uploaded-files.model';
 
 describe('DataUploadService', () => {
   let service: DataUploadService;
@@ -17,28 +18,16 @@ describe('DataUploadService', () => {
   });
 
   it('should call the API URL with the form data when calling the uploadFile() fn', () => {
-    const mockFile: File = new File(['content'], 'file-name.csv');
+    const arg: UploadedFiles = {
+      ripsFile: new File(['content'], 'rips.xlsx'),
+      monthlyFile: new File(['content'], 'informe.xlsx'),
+    };
     const mockFormData = new FormData();
-    mockFormData.append('file', mockFile, mockFile.name);
+    mockFormData.append('rips', arg.ripsFile, arg.ripsFile.name);
+    mockFormData.append('monthly', arg.monthlyFile, arg.monthlyFile.name);
 
-    service.uploadFile(mockFile);
+    service.uploadFile(arg);
 
     expect(http.post).toHaveBeenCalledWith(service['API_URL'], mockFormData);
-  });
-
-  it('should return true if the file extension is valid', () => {
-    const validFileName = 'valid.csv';
-
-    const result = service.isValidFileExtension(validFileName);
-
-    expect(result).toBe(true);
-  });
-
-  it('should return false if the file extension is invalid', () => {
-    const invalidFileName = 'invalid.jpeg';
-
-    const result = service.isValidFileExtension(invalidFileName);
-
-    expect(result).toBe(false);
   });
 });

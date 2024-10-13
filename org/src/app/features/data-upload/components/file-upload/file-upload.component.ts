@@ -1,14 +1,14 @@
 import {
   Component,
   ElementRef,
-  inject,
-  output,
-  signal,
+  EventEmitter,
+  Output,
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToFileArrayPipe } from '../../../../core/pipes/to-file-array/to-file-array.pipe';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-file-upload',
@@ -18,22 +18,26 @@ import { ToFileArrayPipe } from '../../../../core/pipes/to-file-array/to-file-ar
   templateUrl: './file-upload.component.html',
 })
 export class FileUploadComponent {
-  pipe = inject(ToFileArrayPipe);
+  @Output()
+  submitButtonClick = new EventEmitter<FileList | null>();
 
-  onSubmitButtonClicked = output<FileList | null>();
   @ViewChild('inputFile') fileInput!: ElementRef<HTMLInputElement>;
-  fileList = signal<File[]>([]);
+  fileList$ = new BehaviorSubject<File[]>([]);
+
+  constructor(private readonly pipe: ToFileArrayPipe) {}
 
   submit(): void {
-    this.onSubmitButtonClicked.emit(this.fileInput.nativeElement.files);
+    this.submitButtonClick.emit(this.fileInput.nativeElement.files);
   }
 
   cleanSelection(): void {
     this.fileInput.nativeElement.value = '';
-    this.fileList.set([]);
+    this.fileList$.next([]);
   }
 
   filesLoaded(event: Event) {
-    this.fileList.set(this.pipe.transform(this.fileInput.nativeElement.files));
+    this.fileList$.next(
+      this.pipe.transform(this.fileInput.nativeElement.files),
+    );
   }
 }

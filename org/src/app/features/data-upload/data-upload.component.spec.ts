@@ -1,8 +1,11 @@
 import { DataUploadComponent } from './data-upload.component';
 import { AlertToastService } from '../../core/services/alert-toast/alert-toast.service';
 import { DataUploadService } from './services/data-upload/data-upload.service';
-import { of, throwError } from 'rxjs';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
+import { ExcelService } from './services/excel/excel.service';
+import { EncryptionService } from './services/encryption/encryption.service';
+import { filesInputHandler } from './utils/validations/concrete.handlers';
+import { of, throwError } from 'rxjs';
 
 describe('DataUploadComponent', () => {
   let component: DataUploadComponent;
@@ -13,13 +16,26 @@ describe('DataUploadComponent', () => {
   const dataUploadService: DataUploadService = {
     uploadFile: jest.fn(),
     isValidFileExtension: jest.fn(),
+    organizeFiles: jest.fn(),
+  } as never;
+  const excelService: ExcelService = {
+    arrayBufferToExcel: jest.fn().mockResolvedValue(() => ({})),
+    getColumn: jest.fn(),
+  } as never;
+  const encryptionService: EncryptionService = {
+    getHashedDocuments: jest.fn(),
   } as never;
   const fileUploadComponent: FileUploadComponent = {
     cleanSelection: jest.fn(),
   } as never;
 
   beforeEach(() => {
-    component = new DataUploadComponent(alertToastService, dataUploadService);
+    component = new DataUploadComponent(
+      alertToastService,
+      dataUploadService,
+      excelService,
+      encryptionService,
+    );
     component.fileUploadComponent = fileUploadComponent;
   });
 
@@ -27,80 +43,60 @@ describe('DataUploadComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should throw a warning alert if no file is loaded when calling the submit button', () => {
-    component.handleSubmitButtonClicked(undefined);
+  describe('handleSubmitButtonClicked()', () => {
+    it(
+      'GIVEN the files loaded are not valid ' +
+        'WHEN the submit button is clicked ' +
+        'THEN it should show the respective alert error',
+      async () => {
+        jest.spyOn(filesInputHandler, 'handle');
+        const arg = null;
 
-    expect(alertToastService.open).toHaveBeenCalledWith(
-      'warning',
-      'No ha seleccionado ningún archivo',
+        await component.handleSubmitButtonClicked(arg);
+
+        expect(filesInputHandler.handle).toHaveBeenCalledWith(arg);
+        expect(dataUploadService.organizeFiles).not.toHaveBeenCalled();
+        expect(alertToastService.open).toHaveBeenCalledWith(
+          'warning',
+          'No ha seleccionado ningún archivo',
+        );
+      },
     );
   });
 
-  it('should throw a warning alert if the loaded file has an invalid file extension', () => {
-    jest
-      .spyOn(dataUploadService, 'isValidFileExtension')
-      .mockImplementationOnce(() => false);
+  describe('uploadFile()', () => {
+    it('should open a success alert when the request succeeds', () => {
+      jest
+        .spyOn(dataUploadService, 'uploadFile')
+        .mockImplementationOnce(() => of('valid'));
 
-    component.handleSubmitButtonClicked({ name: 'image.png' } as never);
+      component.uploadFile({
+        ripsFile: new File([], 'a.xlsx'),
+        monthlyFile: new File([], 'b.xlsx'),
+      });
 
-    expect(alertToastService.open).toHaveBeenCalledWith(
-      'warning',
-      'El archivo no es de un formato valido. Debe ser: .xlsx, .xls o .csv',
-    );
-  });
+      expect(fileUploadComponent.cleanSelection).toHaveBeenCalled();
+      expect(alertToastService.open).toHaveBeenCalledWith(
+        'success',
+        'Archivos enviados exitosamente',
+      );
+    });
 
-  it('should call the service if the loaded file is valid', () => {
-    jest.spyOn(component, 'uploadFile');
-    jest
-      .spyOn(dataUploadService, 'uploadFile')
-      .mockImplementationOnce(() => of());
-    jest
-      .spyOn(dataUploadService, 'isValidFileExtension')
-      .mockImplementationOnce(() => true);
-    const mockFile: File = { name: 'data.csv' } as never;
+    it('should open a error alert when the request fails', () => {
+      jest
+        .spyOn(dataUploadService, 'uploadFile')
+        .mockImplementationOnce(() => throwError(() => 'Error'));
 
-    component.handleSubmitButtonClicked(mockFile);
+      component.uploadFile({
+        ripsFile: new File([], 'a.xlsx'),
+        monthlyFile: new File([], 'b.xlsx'),
+      });
 
-    expect(component.uploadFile).toHaveBeenCalledWith(mockFile);
-    expect(dataUploadService.uploadFile).toHaveBeenCalledWith(mockFile);
-  });
-
-  it('should open a success alert toast if the service responds successfully', () => {
-    jest
-      .spyOn(dataUploadService, 'uploadFile')
-      .mockImplementationOnce(() => of({ code: 200 }));
-    const mockFile: File = { name: 'data.csv' } as never;
-
-    component.uploadFile(mockFile);
-
-    expect(alertToastService.open).toHaveBeenCalledWith(
-      'success',
-      'Archivo enviado exitosamente',
-    );
-  });
-
-  it('should open a error alert toast if the service responds with error', () => {
-    jest
-      .spyOn(dataUploadService, 'uploadFile')
-      .mockImplementationOnce(() => throwError(() => 'error'));
-    const mockFile: File = { name: 'data.csv' } as never;
-
-    component.uploadFile(mockFile);
-
-    expect(alertToastService.open).toHaveBeenCalledWith(
-      'error',
-      'Ocurrió un error cargando el archivo',
-    );
-  });
-
-  it('should call the cleanSelection fn from the file-upload-component each time a request is made', () => {
-    jest
-      .spyOn(dataUploadService, 'uploadFile')
-      .mockImplementationOnce(() => of());
-    const mockFile: File = { name: 'data.csv' } as never;
-
-    component.uploadFile(mockFile);
-
-    expect(fileUploadComponent.cleanSelection).toHaveBeenCalled();
+      expect(fileUploadComponent.cleanSelection).toHaveBeenCalled();
+      expect(alertToastService.open).toHaveBeenCalledWith(
+        'error',
+        'Ocurrió un error cargando los archivos',
+      );
+    });
   });
 });
