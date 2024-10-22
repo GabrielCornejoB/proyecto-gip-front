@@ -22,6 +22,13 @@ export const appRoutes: Route[] = [
             (c) => c.LoginComponent,
           ),
       },
+      {
+        path: 'register',
+        loadComponent: () =>
+          import('./features/authentication/register/register.component').then(
+            (c) => c.RegisterComponent,
+          ),
+      },
     ],
   },
   {

@@ -22,6 +22,14 @@ export class SupabaseAuthService {
     });
   }
 
+  // TODO: Unitarias
+  async register(email: string, password: string) {
+    return await this.supabaseClient.auth.signUp({
+      email,
+      password,
+    });
+  }
+
   async logout() {
     return this.supabaseClient.auth.signOut();
   }
