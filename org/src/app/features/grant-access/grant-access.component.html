@@ -1,0 +1,41 @@
+<div class="flex h-full w-full flex-col gap-4">
+  <app-header class="w-full" text="Acceso a nuevos usuarios"></app-header>
+
+  <div class="flex flex-row pl-5 text-gray-500">
+    <h4 class="w-56">Correo</h4>
+    <h4 class="w-56">Nombre</h4>
+    <h4>Justificación</h4>
+  </div>
+  <main class="flex w-full flex-col gap-6">
+    @if (pendingUsers | async; as items) {
+      @for (item of items; track item.id) {
+        <div
+          class="flex flex-row items-center justify-between rounded-2xl bg-gray-50"
+        >
+          <div class="flex flex-row items-center">
+            <strong class="my-7 ml-6 w-44">{{ item.email }}</strong>
+            <div
+              class="divider divider-neutral divider-horizontal my-3 opacity-20"
+            ></div>
+            <span class="my-5 w-44">
+              {{ item.name }}
+            </span>
+            <div
+              class="divider divider-neutral divider-horizontal my-3 opacity-20"
+            ></div>
+            <p class="my-5">
+              {{ item.justification }}
+            </p>
+          </div>
+          <button
+            class="btn btn-secondary mr-4"
+            (click)="grantAccessToUser(item.user_id)"
+            [disabled]="!!(isLoading$ | async)"
+          >
+            Otorgar Acceso
+          </button>
+        </div>
+      }
+    }
+  </main>
+</div>

@@ -50,7 +50,21 @@ export const appRoutes: Route[] = [
             (c) => c.DiagnosticAiComponent,
           ),
       },
+      {
+        path: 'grant-access',
+        loadComponent: () =>
+          import('./features/grant-access/grant-access.component').then(
+            (c) => c.GrantAccessComponent,
+          ),
+      },
     ],
+  },
+  {
+    path: 'missing-permissions',
+    loadComponent: () =>
+      import(
+        './features/missing-permissions/missing-permissions.component'
+      ).then((c) => c.MissingPermissionsComponent),
   },
   {
     path: '**',

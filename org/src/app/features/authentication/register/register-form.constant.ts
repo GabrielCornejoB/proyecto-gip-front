@@ -20,6 +20,8 @@ const samePasswordValidator: ValidatorFn = (
 
 export type RegisterForm = {
   email: FormControl<string | null>;
+  name: FormControl<string | null>;
+  justification: FormControl<string | null>;
   password: FormControl<string | null>;
   confirmPassword: FormControl<string | null>;
 };
@@ -29,6 +31,8 @@ export const registerForm = new FormGroup<RegisterForm>(
     email: new FormControl('', [V.required, V.email, V.minLength(5)]),
     password: new FormControl('', [V.required, V.minLength(7)]),
     confirmPassword: new FormControl('', [V.required, V.minLength(7)]),
+    name: new FormControl('', [V.required, V.minLength(5)]),
+    justification: new FormControl('', [V.required, V.minLength(10)]),
   },
   [samePasswordValidator],
 );

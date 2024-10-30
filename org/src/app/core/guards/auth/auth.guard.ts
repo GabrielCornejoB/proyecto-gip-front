@@ -19,6 +19,19 @@ export class AuthGuard implements CanActivate {
       return false;
     }
 
+    const accessToken = data.session?.access_token;
+
+    if (accessToken) {
+      const { data: roleData } = await this.supabaseAuthService.getUserRole(
+        data.session.user.id,
+      );
+      if (!roleData || !roleData[0]?.role || roleData[0].role === 'pending') {
+        await this.router.navigateByUrl('/missing-permissions');
+        await this.supabaseAuthService.logout();
+        return false;
+      }
+    }
+
     return true;
   }
 }

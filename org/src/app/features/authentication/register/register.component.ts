@@ -27,27 +27,42 @@ export class RegisterComponent {
       this.form.controls.email.errors ||
       this.form.controls.password.errors ||
       this.form.controls.confirmPassword.errors ||
+      this.form.controls.name.errors ||
+      this.form.controls.justification.errors ||
       !this.form.controls.email.value ||
       !this.form.controls.password.value ||
-      !this.form.controls.confirmPassword.value
+      !this.form.controls.confirmPassword.value ||
+      !this.form.controls.name.value ||
+      !this.form.controls.justification.value
     ) {
       this.form.reset();
       this.form.controls.email.markAsDirty();
       this.form.controls.password.markAsDirty();
       this.form.controls.confirmPassword.markAsDirty();
+      this.form.controls.name.markAsDirty();
+      this.form.controls.justification.markAsDirty();
       return;
     }
     this.loading = true;
-    const { error } = await this.supabaseAuthService.register(
+    const { error, data } = await this.supabaseAuthService.register(
       this.form.controls.email.value,
       this.form.controls.password.value,
     );
-    if (error) {
+    this.loading = false;
+    if (error || !data || !data.user?.id) {
       return this.alertToastService.open(
         'error',
         'Ocurrió un error durante el registro',
       );
     }
+
+    await this.supabaseAuthService.initializeUserRole(
+      data.user.id,
+      this.form.controls.name.value,
+      this.form.controls.justification.value,
+      this.form.controls.email.value,
+    );
+
     this.form.reset();
     await this.router.navigateByUrl('/dashboard/data-upload');
     this.alertToastService.open(
