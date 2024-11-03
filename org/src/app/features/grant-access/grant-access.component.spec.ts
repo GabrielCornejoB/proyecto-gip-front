@@ -1,18 +1,16 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GrantAccessComponent } from './grant-access.component';
+import { SupabaseAuthService } from '../authentication/services/supabase-auth/supabase-auth.service';
 
 describe('GrantAccessComponent', () => {
   let component: GrantAccessComponent;
-  let fixture: ComponentFixture<GrantAccessComponent>;
+  let service: SupabaseAuthService;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [GrantAccessComponent],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(GrantAccessComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    service = {
+      getAllPendingUsers: jest.fn(),
+      grandUserAccess: jest.fn(),
+    } as never;
+    component = new GrantAccessComponent(service);
   });
 
   it('should create', () => {

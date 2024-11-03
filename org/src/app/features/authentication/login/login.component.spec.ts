@@ -1,18 +1,26 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoginComponent } from './login.component';
+import { SupabaseAuthService } from '../services/supabase-auth/supabase-auth.service';
+import { AlertToastService } from '../../../core/services/alert-toast/alert-toast.service';
+import { Router } from '@angular/router';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
-  let fixture: ComponentFixture<LoginComponent>;
+  let service: SupabaseAuthService;
+  let alertService: AlertToastService;
+  let router: Router;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [LoginComponent],
-    }).compileComponents();
+  beforeEach(() => {
+    service = {
+      login: jest.fn(),
+    } as never;
+    alertService = {
+      open: jest.fn(),
+    } as never;
+    router = {
+      navigateByUrl: jest.fn(),
+    } as never;
 
-    fixture = TestBed.createComponent(LoginComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new LoginComponent(service, alertService, router);
   });
 
   it('should create', () => {
