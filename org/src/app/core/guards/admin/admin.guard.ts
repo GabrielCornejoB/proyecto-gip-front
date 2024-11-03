@@ -9,8 +9,8 @@ import { AlertToastService } from '../../services/alert-toast/alert-toast.servic
 export class AdminGuard implements CanActivate {
   constructor(
     private readonly supabaseAuthService: SupabaseAuthService,
-    private readonly router: Router,
     private readonly alertService: AlertToastService,
+    private readonly router: Router,
   ) {}
 
   async canActivate(): Promise<boolean> {
