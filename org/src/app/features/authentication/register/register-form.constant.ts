@@ -29,10 +29,26 @@ export type RegisterForm = {
 export const registerForm = new FormGroup<RegisterForm>(
   {
     email: new FormControl('', [V.required, V.email, V.minLength(5)]),
-    password: new FormControl('', [V.required, V.minLength(7)]),
-    confirmPassword: new FormControl('', [V.required, V.minLength(7)]),
-    name: new FormControl('', [V.required, V.minLength(5)]),
-    justification: new FormControl('', [V.required, V.minLength(10)]),
+    password: new FormControl('', [
+      V.required,
+      V.minLength(7),
+      V.pattern(/^\S.*\S$/),
+    ]),
+    confirmPassword: new FormControl('', [
+      V.required,
+      V.minLength(7),
+      V.pattern(/^\S.*\S$/),
+    ]),
+    name: new FormControl('', [
+      V.required,
+      V.minLength(5),
+      V.pattern(/^\S.*\S$/),
+    ]),
+    justification: new FormControl('', [
+      V.required,
+      V.minLength(10),
+      V.pattern(/^\S.*\S$/),
+    ]),
   },
   [samePasswordValidator],
 );

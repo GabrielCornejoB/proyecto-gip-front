@@ -3,6 +3,7 @@ import { DashboardWrapperComponent } from './core/components/dashboard-wrapper/d
 import { AuthWrapperComponent } from './core/components/auth-wrapper/auth-wrapper.component';
 import { AuthGuard } from './core/guards/auth/auth.guard';
 import { PublicGuard } from './core/guards/public/public.guard';
+import { AdminGuard } from './core/guards/admin/admin.guard';
 
 export const appRoutes: Route[] = [
   {
@@ -56,6 +57,7 @@ export const appRoutes: Route[] = [
           import('./features/grant-access/grant-access.component').then(
             (c) => c.GrantAccessComponent,
           ),
+        canActivate: [AdminGuard],
       },
     ],
   },
