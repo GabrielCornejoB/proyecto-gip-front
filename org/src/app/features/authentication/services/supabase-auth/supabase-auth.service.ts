@@ -22,11 +22,45 @@ export class SupabaseAuthService {
     });
   }
 
+  // TODO: Unitarias
+  async register(email: string, password: string) {
+    return await this.supabaseClient.auth.signUp({
+      email,
+      password,
+    });
+  }
+
   async logout() {
     return this.supabaseClient.auth.signOut();
   }
 
   async getUserSession() {
     return await this.supabaseClient.auth.getSession();
+  }
+
+  async initializeUserRole(
+    userId: string,
+    name: string,
+    justification: string,
+    email: string,
+  ) {
+    return this.supabaseClient
+      .from('user_role')
+      .insert({ user_id: userId, role: 'pending', name, justification, email });
+  }
+
+  async getUserRole(userId: string) {
+    return this.supabaseClient.from('user_role').select().eq('user_id', userId);
+  }
+
+  async getAllPendingUsers() {
+    return this.supabaseClient.from('user_role').select().eq('role', 'pending');
+  }
+
+  async grantUserAccess(userId: string) {
+    return this.supabaseClient
+      .from('user_role')
+      .update({ role: 'user' })
+      .eq('user_id', userId);
   }
 }

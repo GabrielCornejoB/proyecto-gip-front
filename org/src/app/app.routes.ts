@@ -3,6 +3,7 @@ import { DashboardWrapperComponent } from './core/components/dashboard-wrapper/d
 import { AuthWrapperComponent } from './core/components/auth-wrapper/auth-wrapper.component';
 import { AuthGuard } from './core/guards/auth/auth.guard';
 import { PublicGuard } from './core/guards/public/public.guard';
+import { AdminGuard } from './core/guards/admin/admin.guard';
 
 export const appRoutes: Route[] = [
   {
@@ -20,6 +21,13 @@ export const appRoutes: Route[] = [
         loadComponent: () =>
           import('./features/authentication/login/login.component').then(
             (c) => c.LoginComponent,
+          ),
+      },
+      {
+        path: 'register',
+        loadComponent: () =>
+          import('./features/authentication/register/register.component').then(
+            (c) => c.RegisterComponent,
           ),
       },
     ],
@@ -43,7 +51,22 @@ export const appRoutes: Route[] = [
             (c) => c.DiagnosticAiComponent,
           ),
       },
+      {
+        path: 'grant-access',
+        loadComponent: () =>
+          import('./features/grant-access/grant-access.component').then(
+            (c) => c.GrantAccessComponent,
+          ),
+        canActivate: [AdminGuard],
+      },
     ],
+  },
+  {
+    path: 'missing-permissions',
+    loadComponent: () =>
+      import(
+        './features/missing-permissions/missing-permissions.component'
+      ).then((c) => c.MissingPermissionsComponent),
   },
   {
     path: '**',

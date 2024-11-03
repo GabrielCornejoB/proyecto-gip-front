@@ -7,4 +7,8 @@ export const MENU_ITEMS = [
     displayName: 'Modelo Predictivo Diagnostico',
     path: '/dashboard/diagnostic-ai',
   },
+  {
+    displayName: 'Administrar Accesos',
+    path: '/dashboard/grant-access',
+  },
 ];

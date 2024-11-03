@@ -5,7 +5,7 @@
   "scripts": {
     "start": "nx serve --no-cloud",
     "build": "nx build --no-cloud --skip-nx-cache --prod",
-    "test": "nx test"
+    "test": "nx test --no-cloud --skip-nx-cache"
   },
   "private": true,
   "dependencies": {
@@ -19,6 +19,7 @@
     "@angular/router": "~18.2.0",
     "@supabase/supabase-js": "^2.45.4",
     "exceljs": "^4.4.0",
+    "jwt-decode": "^4.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"

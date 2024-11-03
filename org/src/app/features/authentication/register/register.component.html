@@ -1,0 +1,116 @@
+<form
+  (ngSubmit)="handleFormSubmit()"
+  [formGroup]="form"
+  class="flex flex-col gap-8 rounded-xl bg-base-100 p-8 shadow-lg"
+>
+  <h1 class="px-20 text-center text-6xl font-extrabold text-secondary">
+    Data<strong class="text-primary-content">CAP</strong>
+  </h1>
+
+  <div class="mx-6 flex flex-row justify-between gap-4">
+    <label
+      [ngClass]="{
+        'input-error':
+          !!form.controls.email.errors && !form.controls.email.untouched,
+      }"
+      class="input input-bordered tooltip flex items-center gap-2"
+      data-tip="El campo debe llevar un formato de correo electrónico valido. Ejemplo: mi-correo@gmail.com"
+    >
+      <span class="material-symbols-outlined opacity-70"> mail </span>
+      <input
+        class="grow"
+        formControlName="email"
+        placeholder="Correo electrónico"
+        type="text"
+      />
+    </label>
+
+    <label
+      [ngClass]="{
+        'input-error':
+          !!form.controls.name.errors && !form.controls.name.untouched,
+      }"
+      class="input input-bordered tooltip flex items-center gap-2"
+      data-tip="El nombre de usuario debe tener al menos 5 carácteres y no puede empezar ni terminar con espacios en blanco."
+    >
+      <span class="material-symbols-outlined opacity-70"> id_card </span>
+      <input
+        class="grow"
+        formControlName="name"
+        placeholder="Nombre del usuario"
+        type="text"
+      />
+    </label>
+  </div>
+
+  <div class="mx-6 flex flex-row justify-between gap-4">
+    <label
+      [ngClass]="{
+        'input-error':
+          (!!form.controls.password.errors || form.errors) &&
+          !form.controls.password.untouched &&
+          !form.controls.confirmPassword.untouched,
+      }"
+      class="input input-bordered tooltip flex items-center gap-2"
+      data-tip="La contraseña debe tener al menos 7 carácteres y no puede empezar ni terminar con espacios en blanco."
+    >
+      <span class="material-symbols-outlined opacity-70"> lock </span>
+      <input
+        class="grow"
+        formControlName="password"
+        placeholder="Contraseña"
+        type="password"
+      />
+    </label>
+
+    <label
+      [ngClass]="{
+        'input-error':
+          (!!form.controls.confirmPassword.errors || form.errors) &&
+          !form.controls.confirmPassword.untouched,
+      }"
+      class="input input-bordered tooltip flex items-center gap-2"
+      data-tip="Este campo debe coincidir con el campo anterior."
+    >
+      <span class="material-symbols-outlined opacity-70"> lock </span>
+      <input
+        class="grow"
+        formControlName="confirmPassword"
+        placeholder="Confirmar Contraseña"
+        type="password"
+      />
+    </label>
+  </div>
+
+  <div
+    class="tooltip"
+    data-tip="La justificación debe tener al menos 10 carácteres y no puede empezar ni terminar con espacios en blanco."
+  >
+    <label class="form-control mx-6">
+      <textarea
+        [ngClass]="{
+          'textarea-error':
+            !!form.controls.justification.errors &&
+            !form.controls.justification.untouched,
+        }"
+        class="textarea textarea-bordered grow resize-none"
+        formControlName="justification"
+        placeholder="Justificación de acceso"
+        rows="2"
+      ></textarea>
+    </label>
+  </div>
+
+  <button [disabled]="loading" class="btn btn-secondary mx-6" type="submit">
+    @if (!loading) {
+      Registrate
+    } @else {
+      Cargando
+    }
+  </button>
+
+  <span class="text-center">
+    ¿Ya tienes una cuenta?
+    <a class="text-secondary" routerLink="/auth/login">Inicia sesión</a>
+  </span>
+</form>

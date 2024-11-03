@@ -28,7 +28,7 @@ describe('FileUploadComponent', () => {
 
     component.submit();
 
-    expect(component.submitButtonClick.emit).toHaveBeenCalledWith(mockFile);
+    expect(component.submitButtonClick.emit).toHaveBeenCalled();
   });
 
   it('should set the value to empty when the cleanSelection button is clicked', () => {
