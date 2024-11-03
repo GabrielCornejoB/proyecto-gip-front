@@ -2,6 +2,7 @@
   <app-header class="w-full" text="Módulo de Carga de Datos"></app-header>
   <app-file-upload
     (submitButtonClick)="handleSubmitButtonClicked($event)"
+    [isLoading]="isLoading"
     class="flex-grow"
   ></app-file-upload>
 </div>

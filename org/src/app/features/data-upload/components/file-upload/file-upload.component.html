@@ -67,10 +67,11 @@
         </button>
         <button
           (click)="submit()"
+          [disabled]="isLoading"
           class="btn btn-secondary"
           data-testid="submit-file-button"
         >
-          Enviar archivos
+          {{ isLoading ? 'Cargando' : 'Enviar archivos' }}
         </button>
       </div>
     </div>

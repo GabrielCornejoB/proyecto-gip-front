@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -18,6 +19,9 @@ import { BehaviorSubject } from 'rxjs';
   templateUrl: './file-upload.component.html',
 })
 export class FileUploadComponent {
+  @Input()
+  isLoading: boolean = false;
+
   @Output()
   submitButtonClick = new EventEmitter<FileList | null>();
 

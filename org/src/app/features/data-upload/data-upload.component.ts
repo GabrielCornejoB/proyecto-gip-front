@@ -19,6 +19,8 @@ import { filesInputHandler } from './utils/validations/concrete.handlers';
 export class DataUploadComponent {
   @ViewChild(FileUploadComponent) fileUploadComponent!: FileUploadComponent;
 
+  isLoading: boolean = false;
+
   constructor(
     private readonly alertToastService: AlertToastService,
     private readonly dataUploadService: DataUploadService,
@@ -70,20 +72,25 @@ export class DataUploadComponent {
   }
 
   uploadFile(files: UploadedFiles): void {
+    this.isLoading = true;
     this.dataUploadService
       .uploadFile(files)
       .pipe(finalize(() => this.fileUploadComponent.cleanSelection()))
       .subscribe({
-        next: () =>
+        next: () => {
           this.alertToastService.open(
             'success',
             'Archivos enviados exitosamente',
-          ),
-        error: () =>
+          );
+          this.isLoading = false;
+        },
+        error: () => {
           this.alertToastService.open(
             'error',
             'Ocurrió un error cargando los archivos',
-          ),
+          );
+          this.isLoading = false;
+        },
       });
   }
 }
