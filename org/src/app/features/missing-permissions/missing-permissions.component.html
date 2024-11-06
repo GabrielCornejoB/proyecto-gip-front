@@ -1,6 +1,22 @@
-<p>
-  Has iniciado sesión exitosamente pero aún debes esperar que un administrador
-  te otorgue acceso para hacer uso de la aplicación.
-</p>
+<div class="flex h-dvh w-dvw items-center justify-center bg-base-200">
+  <div
+    class="flex w-[30rem] flex-col items-center justify-center gap-6 rounded-xl border-[1px] border-gray-300 bg-base-100 p-6 text-center"
+  >
+    <span
+      class="material-symbols-outlined aspect-square rounded-full bg-blue-200 p-2 text-4xl text-secondary"
+    >
+      lock
+    </span>
 
-<button class="btn" routerLink="/auth/login">ir a login</button>
+    <h1 class="text-2xl font-bold">Permisos Insuficientes</h1>
+
+    <p>
+      Tu cuenta está a la espera de ser aprobada. Un <br />
+      administrador debe darte acceso para continuar.
+    </p>
+
+    <button class="btn btn-secondary" routerLink="/auth/login">
+      Regresar al inicio de sesión
+    </button>
+  </div>
+</div>
