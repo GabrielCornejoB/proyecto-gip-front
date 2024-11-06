@@ -5,7 +5,8 @@
   "scripts": {
     "start": "nx serve --no-cloud",
     "build": "nx build --no-cloud --skip-nx-cache --prod",
-    "test": "nx test --no-cloud --skip-nx-cache"
+    "test": "nx test --no-cloud --skip-nx-cache",
+    "e2e": "nx run e2e:e2e --no-cloud --skip-nx-cache"
   },
   "private": true,
   "dependencies": {
