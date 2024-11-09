@@ -45,6 +45,13 @@ export const appRoutes: Route[] = [
           ),
       },
       {
+        path: 'upload-batches',
+        loadComponent: () =>
+          import('./features/upload-batches/upload-batches.component').then(
+            (c) => c.UploadBatchesComponent,
+          ),
+      },
+      {
         path: 'diagnostic-ai',
         loadComponent: () =>
           import('./features/diagnostic-ai/diagnostic-ai.component').then(

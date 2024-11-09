@@ -63,4 +63,15 @@ export class SupabaseAuthService {
       .update({ role: 'user' })
       .eq('user_id', userId);
   }
+
+  async getAllUniqueBatches() {
+    return this.supabaseClient.from('batches').select();
+  }
+
+  async deleteRegistersOfBatch(batchId: string) {
+    return this.supabaseClient
+      .from('Consultas_duplicate')
+      .delete()
+      .eq('batch_id', batchId);
+  }
 }

@@ -4,6 +4,10 @@ export const MENU_ITEMS = [
     path: '/dashboard/data-upload',
   },
   {
+    displayName: 'Datos Previamente Cargados',
+    path: '/dashboard/upload-batches',
+  },
+  {
     displayName: 'Modelo Predictivo Diagnostico',
     path: '/dashboard/diagnostic-ai',
   },
