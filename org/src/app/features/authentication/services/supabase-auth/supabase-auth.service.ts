@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { environment } from '../../../../../environments/environment';
+import { AiRequest } from '../../../diagnostic-ai/ai-request.model';
 
 @Injectable({
   providedIn: 'root',
@@ -73,5 +74,15 @@ export class SupabaseAuthService {
       .from('Consultas_duplicate')
       .delete()
       .eq('batch_id', batchId);
+  }
+
+  async insertPrediction(request: AiRequest, prediction: string) {
+    return this.supabaseClient
+      .from('predictions')
+      .insert({ ...request, prediction });
+  }
+
+  async getPredictions() {
+    return this.supabaseClient.from('predictions').select();
   }
 }
