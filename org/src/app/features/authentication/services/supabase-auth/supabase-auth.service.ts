@@ -71,7 +71,7 @@ export class SupabaseAuthService {
 
   async deleteRegistersOfBatch(batchId: string) {
     return this.supabaseClient
-      .from('Consultas_duplicate')
+      .from('Consultas')
       .delete()
       .eq('batch_id', batchId);
   }
